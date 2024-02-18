@@ -1,0 +1,56 @@
+<!-- news/templates/news/videos.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>News Summarization</title>
+    <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+    <style>
+        body {
+            background-color: #f0f0f0; /* Set your desired background color */
+        }
+
+        .videos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Responsive grid */
+            gap: 20px; /* Set gap between video cards */
+            padding: 20px; /* Add some padding for spacing */
+        }
+
+        /* Customize each video card */
+        .video-card {
+            border-radius: 15px; /* Add border-radius for rounded corners */
+            box-shadow: 0 4px 8px rgba(0, 0, 100, 0.1); /* Add box shadow for a subtle effect */
+            padding: 15px; /* Add padding for content spacing */
+            background-color: #cce5ff; /* Set your desired soft blue background color */
+        }
+
+        .video-card p {
+            margin-bottom: 10px; /* Add margin between paragraphs */
+        }
+    </style>
+</head>
+<body>
+    <h1>News Summarization</h1>
+
+    <div class="videos-grid">
+        {% for summarized_data in summarized_data_list %}
+            <div class="video-card {% if forloop.counter == 1 %}bbc{% elif forloop.counter == 2 %}cnn{% endif %}">
+                <p><strong>Summarized Text:</strong></p>
+                <p>{{ summarized_data }}</p>
+            </div>
+        {% endfor %}
+    </div>
+    
+    
+    
+
+    
+
+    <!-- Include Bootstrap JS and Popper.js -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+# Common exclusions
+*.log
+*.tmp
+*.cache
+coverage/*
+node_modules/
+bower_components/
+vendor/
+build/
+dist/
+.DS_Store
+.idea/
+*.env
+.vscode/
+
+# Optional exclusions based on your technology stack
+# Add specific patterns based on your project needs
+
+# Add comments to explain your reasoning for certain exclusions

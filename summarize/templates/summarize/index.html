@@ -1,0 +1,133 @@
+<!-- transcribe/templates/index.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Extractor</title>
+
+    <style>
+      body, html {
+          height: 100%;
+          margin: 0;
+      }
+
+      .container {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          min-height: 20vh;
+      }
+
+      .btn-trigger-news-app {
+          color: #ffffff; /* Set text color */
+          background-color: #007bff; /* Set background color */
+          border: none;
+          border-radius: 8px;
+          padding: 10px 20px; /* Adjust padding as needed */
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Add box shadow for a subtle effect */
+          transition: background-color 0.3s, box-shadow 0.3s; /* Add transition effect */
+      }
+
+      .btn-trigger-news-app:hover {
+          background-color: #0056b3; /* Change background color on hover */
+          box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5); /* Add box shadow on hover */
+      }
+  </style>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"
+      integrity="sha512-STof4xm1wgkfm7heWqFJVn58Hm3EtS31XFaagaa8VMReCXAkQnJZ+jEy8PCC/iT18dFy95WcExNHFTqLyp72eQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    
+</head>
+<body class="bg-gray-100">
+    <div class="text-5xl font-extrabold max-w-3xl mx-auto p-12 text-center">
+      <span class="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
+        VidBriefer: YouTube video to Text Summarization
+      </span>
+      <p class="text-2xl font-light text-gray-600">
+        From lengthy to Lucid: Your Video, Your Summary
+      </p>
+    </div>
+    <form id="form" class="max-w-3xl mx-auto space-y-4 p-8 bg-white rounded-lg shadow-lg">
+        {% csrf_token %}
+      <input
+        name="url"
+        class="rounded-sm p-2 w-full border"
+        placeholder="Type YouTube URL here..."
+      />
+      <button
+        type="submit"
+        class="text-white bg-violet-500 rounded-sm w-full py-2"
+      >
+        Submit
+      </button>
+    </form>
+  
+    <div class="max-w-3xl mx-auto space-y-4 p-8 bg-gray-200 rounded-lg shadow-lg relative mt-8">
+      <h2 id="title" class="font-semibold text-2xl"></h2>
+      <div class="absolute top-2 right-2 hover:cursor-pointer" id="copy-text">
+        <!-- SVG Icon, get it here: https://gist.github.com/ahmadrosid/73b006f9265a262ace151bbce3a2d7fb -->
+      </div>
+      <div id="result"></div>
+    </div>
+    <div class="container">
+      <!-- Button to trigger the news app -->
+      <a href="{% url 'trigger_news_app' %}" class="btn btn-trigger-news-app">See TV News Summary!</a>
+  </div>
+
+
+    <!-- Include Bootstrap JS and Popper.js -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    
+    <script>
+        $(document).ready(() => {
+          $("#form").submit(function (e) {
+            e.preventDefault();
+      
+            let formData = $(this).serialize();
+            let req = $.post("{% url 'api' %}", formData, (data) => {
+              let strTemp = "";
+              data.data.segments.forEach((item) => {
+                strTemp += `<a class="hover:text-violet-600" href="${
+                  data.url
+                }&t=${parseInt(item.time, 10).toFixed(0)}s">${item.text}</a>`;
+                if (item.text.includes(".")) {
+                  $("#result").append(`<p class="pb-2">${strTemp}</p>`);
+                  strTemp = "";
+                }
+              });
+      
+              if (strTemp !== "") {
+                $("#result").append(`<p>${strTemp}</p>`);
+              }
+      
+              $("#title").append(data.data.title);
+      
+              $("#copy-text").on("click", function () {
+                let $input = $("<textarea>");
+                $("body").append($input);
+                let texts = data.data.segments
+                  .map((item) => item.text)
+                  .join("")
+                  .trim();
+                $input.val(texts).select();
+                document.execCommand("copy");
+                $input.remove();
+              });
+            });
+            req.fail((err) => {
+              console.log(err);
+            });
+          });
+        });
+    </script>
+</body>
+</html>

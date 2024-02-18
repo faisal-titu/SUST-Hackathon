@@ -1,0 +1,75 @@
+<!-- news/templates/news/videos.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>News Videos</title>
+    <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+    <style>
+        body {
+            background-color: #f0f0f0; /* Set your desired background color */
+        }
+
+        .video-grid {
+            padding: 15px; /* Add some padding for spacing */
+        }
+
+        /* Customize each video grid */
+        .video-grid.bangladesh {
+            border-radius: 15px; /* Add border-radius for rounded corners */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add box shadow for a subtle effect */
+            background-color: #ffcccb; /* Set your desired background color for Bangladesh */
+        }
+
+        .video-grid.bbc {
+            border-radius: 15px; /* Add border-radius for rounded corners */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add box shadow for a subtle effect */
+            background-color: #add8e6; /* Set your desired background color for BBC */
+        }
+
+        .video-grid.cnn {
+            border-radius: 15px; /* Add border-radius for rounded corners */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add box shadow for a subtle effect */
+            background-color: #98fb98; /* Set your desired background color for CNN */
+        }
+
+        .video-grid.guardian {
+            border-radius: 15px; /* Add border-radius for rounded corners */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add box shadow for a subtle effect */
+            background-color: #f0e68c; /* Set your desired background color for The Guardian */
+        }
+
+        .video-grid.aljazeera {
+            border-radius: 15px; /* Add border-radius for rounded corners */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add box shadow for a subtle effect */
+            background-color: #dda0dd; /* Set your desired background color for Al Jazeera */
+        }
+    </style>
+</head>
+<body>
+    <h1>News Videos</h1>
+
+    {% for channel_name, videos in channel_results.items %}
+        <h2>{{ channel_name }}</h2>
+        <div class="row video-grid">
+            {% for video in videos %}
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ video.Title }}</h5>
+                            {% comment %} <p class="card-text"><strong>Video ID:</strong> {{ video.Video_ID }}</p> {% endcomment %}
+                            <p class="card-text"><strong>Video URL:</strong> {{ summarized_data }}</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+
+    <!-- Include Bootstrap JS and Popper.js -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>
